@@ -17,11 +17,10 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  publicar:
+  gerar:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
+    outputs:
+      publicar: ${{ steps.mudou.outputs.publicar }}
     steps:
       - uses: actions/checkout@v4
 
@@ -49,11 +48,44 @@ jobs:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
         run: node scripts/build.mjs
 
-      - uses: actions/configure-pages@v5
+      # Na atualização de hora em hora, só publica se algo mudou no Notion.
+      - name: Ver se há novidades
+        id: mudou
+        run: |
+          nova=$(cat site/versao.txt)
+          atual=$(curl -fsSL --max-time 20 "https://ledressclub.com.br/versao.txt?t=$(date +%s)" || echo "")
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$nova" = "$atual" ]; then
+            echo "Nada mudou desde a última publicação ($nova)."
+            echo "publicar=nao" >> "$GITHUB_OUTPUT"
+          else
+            echo "Publicando versão $nova (no ar: ${atual:-nenhuma})."
+            echo "publicar=sim" >> "$GITHUB_OUTPUT"
+          fi
 
-      - uses: actions/upload-pages-artifact@v3
+      - if: steps.mudou.outputs.publicar == 'sim'
+        uses: actions/configure-pages@v5
+
+      - if: steps.mudou.outputs.publicar == 'sim'
+        uses: actions/upload-pages-artifact@v3
         with:
           path: site
 
+  publicar:
+    needs: gerar
+    if: needs.gerar.outputs.publicar == 'sim'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy2.outputs.page_url || steps.deploy.outputs.page_url }}
+    steps:
       - id: deploy
+        uses: actions/deploy-pages@v4
+        continue-on-error: true
+
+      # O GitHub às vezes demora a "enxergar" o pacote do site; espera e tenta de novo.
+      - if: steps.deploy.outcome == 'failure'
+        run: sleep 60
+
+      - id: deploy2
+        if: steps.deploy.outcome == 'failure'
         uses: actions/deploy-pages@v4
