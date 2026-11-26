@@ -186,3 +186,18 @@ button { font-family: inherit; cursor: pointer; color: var(--grafite); }
   .abertura__sub { font-size: 17px; line-height: 1.5; }
   .botao-whats { padding: 10px 14px; font-size: 12px; letter-spacing: 1.5px; }
 }
+
+/* Aviso de cookies */
+.aviso-cookies { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 50; max-width: 720px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 24px; padding: 18px 22px; background: var(--off-white); border: 1px solid var(--linha); border-radius: 14px; box-shadow: 0 10px 30px rgba(71, 71, 71, .12); }
+.aviso-cookies p { margin: 0; flex: 1 1 320px; font-size: 15px; line-height: 1.5; }
+.aviso-cookies a { color: var(--rose-antigo); }
+.aviso-cookies__botoes { display: flex; gap: 10px; }
+.aviso-cookies button { font-size: 13px; letter-spacing: 2px; text-transform: uppercase; padding: 11px 20px; border-radius: 10px; border: 1.5px solid var(--grafite); background: transparent; }
+.aviso-cookies .aviso-cookies__aceitar { background: var(--rosa); border-color: var(--rosa); }
+.aviso-cookies .aviso-cookies__aceitar:hover { background: #FFB8EA; border-color: #FFB8EA; }
+
+/* Página de privacidade */
+.privacidade { max-width: 760px; padding-top: 56px; padding-bottom: 80px; font-size: 17px; line-height: 1.65; }
+.privacidade h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(34px, 5vw, 44px); line-height: 1.1; margin: 8px 0 24px; }
+.privacidade h2 { font-family: var(--serif); font-weight: 600; font-size: 24px; margin: 36px 0 8px; }
+.privacidade .botao-quero { display: inline-block; border: 0; margin-top: 8px; }
