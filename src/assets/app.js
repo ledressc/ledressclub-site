@@ -44,6 +44,11 @@
         }
       }
     }
+    // Vestidos curtos: tira o "Curto" do começo do nome (o selo da foto já mostra o comprimento)
+    if (ehVestido(p)) {
+      var semCurto = nome.replace(/^Curto\s+(em\s+)?/i, '');
+      if (semCurto) nome = semCurto.charAt(0).toUpperCase() + semCurto.slice(1);
+    }
     return nome || p.nome;
   }
 
