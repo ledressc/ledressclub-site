@@ -197,6 +197,16 @@ async function emParalelo(itens, limite, fn) {
 }
 
 // ---------- Montagem do site ----------
+async function listarArquivos(pasta) {
+  const lista = [];
+  for (const e of await fs.readdir(pasta, { withFileTypes: true })) {
+    const a = path.join(pasta, e.name);
+    if (e.isDirectory()) lista.push(...await listarArquivos(a));
+    else lista.push(a);
+  }
+  return lista;
+}
+
 async function copiarPasta(de, para) {
   await fs.mkdir(para, { recursive: true });
   for (const e of await fs.readdir(de, { withFileTypes: true })) {
@@ -248,7 +258,12 @@ async function main() {
   // Páginas: cabeçalho, rodapé e <head> compartilhados
   const parte = (n) => fs.readFile(path.join(SRC, 'partials', n), 'utf8');
   const [head, cabecalho, rodape] = await Promise.all([parte('head.html'), parte('cabecalho.html'), parte('rodape.html')]);
-  const versao = Date.now().toString(36);
+  // "Impressão digital" do site: só muda quando muda alguma peça, foto ou arquivo do site.
+  // Serve para atualizar o cache dos navegadores e para pular publicações sem novidade.
+  const hash = crypto.createHash('sha256');
+  hash.update(JSON.stringify(dados.pecas));
+  for (const arq of (await listarArquivos(SRC)).sort()) hash.update(path.relative(SRC, arq)).update(await fs.readFile(arq));
+  const versao = hash.digest('hex').slice(0, 12);
   for (const pagina of ['index.html', 'catalogo.html']) {
     const arq = path.join(SAIDA, pagina);
     let html = await fs.readFile(arq, 'utf8');
@@ -259,6 +274,7 @@ async function main() {
       .replaceAll('{{VERSAO}}', versao);
     await fs.writeFile(arq, html);
   }
+  await fs.writeFile(path.join(SAIDA, 'versao.txt'), versao + '\n');
   await fs.writeFile(path.join(SAIDA, 'CNAME'), DOMINIO + '\n');
   await fs.writeFile(path.join(SAIDA, '.nojekyll'), '');
   await fs.writeFile(path.join(SAIDA, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: https://${DOMINIO}/sitemap.xml\n`);
