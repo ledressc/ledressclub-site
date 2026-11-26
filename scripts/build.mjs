@@ -13,6 +13,10 @@ import fs from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import os from 'node:os';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
+const exec = promisify(execFile);
 
 const RAIZ = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const SRC = path.join(RAIZ, 'src');
@@ -154,6 +158,8 @@ async function prepararFoto(img) {
       buf = Buffer.from(await r.arrayBuffer());
     }
     if (sharp) {
+      try { await sharp(buf).metadata(); await sharp(buf).rotate().toBuffer(); }
+      catch { buf = await converterHeic(buf); } // fotos do iPhone (HEIC)
       await sharp(buf).rotate().resize({ width: 640, withoutEnlargement: true }).webp({ quality: 78 }).toFile(p);
       await sharp(buf).rotate().resize({ width: 1280, withoutEnlargement: true }).webp({ quality: 80 }).toFile(g);
     } else {
@@ -162,6 +168,23 @@ async function prepararFoto(img) {
     }
   }
   return { p: 'fotos/' + path.basename(p), g: 'fotos/' + path.basename(g) };
+}
+
+// Converte HEIC/HEIF (formato das fotos do iPhone) para JPEG usando o heif-convert do sistema.
+async function converterHeic(buf) {
+  const base = path.join(os.tmpdir(), 'ld-' + crypto.randomBytes(6).toString('hex'));
+  await fs.writeFile(base + '.heic', buf);
+  let ultimoErro;
+  for (const cmd of ['heif-dec', 'heif-convert']) {
+    try {
+      await exec(cmd, ['-q', '92', base + '.heic', base + '.jpg']);
+      const jpg = await fs.readFile(base + '.jpg');
+      await fs.rm(base + '.heic', { force: true }); await fs.rm(base + '.jpg', { force: true });
+      return jpg;
+    } catch (e) { ultimoErro = e; }
+  }
+  await fs.rm(base + '.heic', { force: true });
+  throw new Error('formato de foto não suportado (HEIC sem conversor): ' + (ultimoErro?.message || ''));
 }
 
 async function emParalelo(itens, limite, fn) {
