@@ -71,7 +71,8 @@
       return '<button type="button" data-foto="' + i + '" aria-label="Foto ' + (i + 1) + '"' + (i === 0 ? ' aria-current="true"' : '') + '>' +
         '<img src="' + esc(f.p) + '" alt="" loading="lazy"></button>';
     }).join('') + '</div>' : '';
-    var descricao = p.descricao || 'Peça do acervo Le Dress Club, revisada e pronta para a sua festa. Fale com a gente para conferir medidas e disponibilidade.';
+    var descricao = p.descricao ? esc(p.descricao) :
+      'Peça do acervo da Le Dress Club, especialmente selecionada e pronta para a sua festa.<br>Fale com a gente para conferir medidas e disponibilidade.';
 
     el('detalhe').innerHTML =
       '<a class="peca__voltar" href="catalogo.html" id="voltar">← Voltar ao catálogo</a>' +
@@ -82,7 +83,7 @@
           (p.codigo ? '<p class="peca__codigo">Cód. ' + esc(p.codigo) + '</p>' : '') +
           '<h1>' + esc(p.nome) + '</h1>' +
           (p.marca ? '<p>Marca: <strong>' + esc(p.marca) + '</strong></p>' : '') +
-          '<p>' + esc(descricao) + '</p>' +
+          '<p>' + descricao + '</p>' +
           '<div class="peca__dados">' +
             (vestido ? dado('Tamanhos', (p.tamanhos || []).join(', ')) + dado('Comprimento', (p.comprimentos || []).join(', ')) : '') +
             dado('Tipo', p.tipo || 'Vestidos') + dado('Cor', (p.cores || []).join(', ')) +
