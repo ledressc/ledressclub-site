@@ -264,7 +264,7 @@ async function main() {
   hash.update(JSON.stringify(dados.pecas));
   for (const arq of (await listarArquivos(SRC)).sort()) hash.update(path.relative(SRC, arq)).update(await fs.readFile(arq));
   const versao = hash.digest('hex').slice(0, 12);
-  for (const pagina of ['index.html', 'catalogo.html']) {
+  for (const pagina of ['index.html', 'catalogo.html', 'privacidade.html']) {
     const arq = path.join(SAIDA, pagina);
     let html = await fs.readFile(arq, 'utf8');
     html = html
