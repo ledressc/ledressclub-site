@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<!--HEAD-->
+<title>Catálogo · Le Dress Club</title>
+<meta name="description" content="Catálogo de vestidos de festa e acessórios para alugar na Le Dress Club. Filtre por tipo, tamanho, comprimento, cor e Seleção Premium de grifes e estilistas.">
+<meta property="og:title" content="Catálogo · Le Dress Club">
+<meta property="og:description" content="Vestidos de festa, clutches, brincos e estolas para alugar. Seleção Premium com grifes e estilistas.">
+<meta property="og:url" content="https://ledressclub.com.br/catalogo.html">
+<link rel="canonical" href="https://ledressclub.com.br/catalogo.html">
+</head>
+<body>
+<!--CABECALHO-->
+
+<main id="lista" class="container catalogo">
+  <h1>Catálogo</h1>
+  <p class="catalogo__intro">Encontrou um vestido que ama? Clique em “Quero esse” que a gente confere a disponibilidade para a sua data pelo WhatsApp.</p>
+
+  <div class="filtros" role="search" aria-label="Filtros do catálogo">
+    <div class="filtro">
+      <span class="filtro__rotulo">Seleção</span>
+      <div class="filtro__opcoes">
+        <button type="button" class="chip chip--premium" id="filtro-premium" aria-pressed="false">Premium · Grifes &amp; Estilistas</button>
+        <span class="filtro__dica">Peças assinadas por estilistas e marcas renomadas</span>
+      </div>
+    </div>
+    <div class="filtro">
+      <span class="filtro__rotulo">Tipo</span>
+      <div class="filtro__opcoes" id="filtro-tipo"></div>
+    </div>
+    <div id="filtros-medidas" style="display: flex; flex-direction: column; gap: 20px">
+      <div class="filtro">
+        <span class="filtro__rotulo">Tamanho</span>
+        <div class="filtro__opcoes" id="filtro-tamanho"></div>
+      </div>
+      <div class="filtro">
+        <span class="filtro__rotulo">Comprimento</span>
+        <div class="filtro__opcoes" id="filtro-comprimento"></div>
+      </div>
+    </div>
+    <div class="filtro">
+      <span class="filtro__rotulo">Cor</span>
+      <div class="filtro__opcoes" id="filtro-cor"></div>
+    </div>
+    <div class="filtros__rodape">
+      <p aria-live="polite"><strong id="total">…</strong> <span id="total-rotulo">peças encontradas</span></p>
+      <button type="button" class="link-botao" id="limpar">Limpar filtros</button>
+    </div>
+  </div>
+
+  <div class="vazio" id="vazio" hidden>
+    <p>Nenhuma peça com esses filtros… por enquanto</p>
+    <p>Toda semana chegam peças novas. Conta pra gente o que você procura.</p>
+    <a href="https://wa.me/5551991663294?text=Ol%C3%A1%2C%20Le%20Dress!%20N%C3%A3o%20achei%20no%20site%20o%20vestido%20que%20procuro.%20Podem%20me%20ajudar%3F" target="_blank" rel="noopener">Pedir ajuda no WhatsApp</a>
+  </div>
+
+  <div class="grade grade--catalogo" id="grade"><p class="carregando">Carregando o catálogo…</p></div>
+</main>
+
+<main id="detalhe" class="container peca" hidden></main>
+
+<!--RODAPE-->
+<script src="assets/app.js?v={{VERSAO}}"></script>
+<script src="assets/catalogo.js?v={{VERSAO}}"></script>
+</body>
+</html>

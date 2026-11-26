@@ -1,0 +1,15 @@
+{
+  "name": "ledressclub-site",
+  "private": true,
+  "type": "module",
+  "description": "Site da Le Dress Club — catálogo atualizado automaticamente a partir do Notion",
+  "scripts": {
+    "build": "node scripts/build.mjs"
+  },
+  "dependencies": {
+    "sharp": "^0.34.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
