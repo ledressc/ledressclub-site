@@ -88,7 +88,7 @@
             dado('Tipo', p.tipo || 'Vestidos') + dado('Cor', (p.cores || []).join(', ')) +
           '</div>' +
           '<a class="peca__quero" href="' + L.linkPeca(p) + '" target="_blank" rel="noopener">Quero esse: ver disponibilidade no WhatsApp</a>' +
-          '<div class="peca__nota"><strong>Prova com hora marcada</strong> no nosso espaço em Porto Alegre, ou <strong>envio para outras cidades</strong> a partir das suas medidas. Ajustes feitos pela nossa costureira.</div>' +
+          '<div class="peca__nota"><strong>Prova com hora marcada</strong> no nosso espaço em Porto Alegre, ou <strong>envio à distância para outras cidades</strong> a partir das suas medidas. Todos os ajustes são feitos pela nossa equipe de costura.</div>' +
         '</div>' +
       '</div>';
 
