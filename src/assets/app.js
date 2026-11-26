@@ -44,9 +44,9 @@
         }
       }
     }
-    // Vestidos curtos: tira o "Curto" do começo do nome (o selo da foto já mostra o comprimento)
+    // Vestidos curtos e midi: tira "Curto"/"Midi" do começo do nome (o selo da foto já mostra o comprimento)
     if (ehVestido(p)) {
-      var semCurto = nome.replace(/^Curto\s+(em\s+)?/i, '');
+      var semCurto = nome.replace(/^(Curto|Midi)\s+(em\s+)?/i, '');
       if (semCurto) nome = semCurto.charAt(0).toUpperCase() + semCurto.slice(1);
     }
     return nome || p.nome;
